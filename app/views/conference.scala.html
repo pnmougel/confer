@@ -102,9 +102,13 @@
                     <form class="well span7 form-horizontal" id="add_comment_form" style="display:none;padding-top:5px;padding-bottom:5px;">
                         <input type="hidden" id="conference_id" value="@conference.id" >
                         <label>User name: </label>
-                        <input type="text" class="input-xlarge" id="formAddUrlLabel" placeholder="Label">
+                    	<div class="control-group">
+                        	<input type="text" class="input-xlarge" id="formAddUrlLabel" placeholder="Label">
+                    	</div>
                         <label>Content: </label>
-                        <textarea class="input-xlarge span4" id="comment" rows="5" placeholder="Your comment..."></textarea>
+                        <div class="control-group">
+                        	<textarea class="input-xlarge span4" id="comment" rows="5" placeholder="Your comment..."></textarea>
+                    	</div>
                         <a class="btn" href="#" id="submit_add_url">Add</a>
                     </form>
                 </div>
