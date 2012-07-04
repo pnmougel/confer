@@ -3,14 +3,14 @@
 <li>
     <div class="vertical-spacing-30"></div>
     <div>
-        <h3><a href="/conference/@conference.id">
+        <h4><a href="/conference/@conference.id">
         @conference.name 
         @if(conference.shortName.isDefined) {
             (@conference.shortName.get)
         }
         </a>
-        </h3>
-        <h5>@conference.conferenceType on @conference.categoryName</h5>
+        </h4>
+        <h6>@conference.conferenceType on @conference.categoryName</h6>
     </div>
 </li>
 

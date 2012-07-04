@@ -3,8 +3,6 @@
 @import helper._
 @import helper.twitterBootstrap._
 
-    
-
 @main(request, "Rainbow") {
     <div class="container">
         <div class="row">
@@ -75,8 +73,9 @@
                 <div class="vertical-spacing-30"></div>
                 <div class="row">
                     <div class="span6"><h3>Links</h3></div>
+					@if(request.session.get("userId").isDefined) {
                     <div class="span2">
-                        <button id="btn_show_new_url" class="btn-mini" type="submit"><i class="icon-edit"></i> Add new link</button>
+                        <button id="btn_show_new_url" class="btn btn-mini" type="submit"><i class="icon-edit"></i> Add</button>
                     </div>
                     <form class="well span7 form-inline add_url_form" style="display:none;padding-top:5px;padding-bottom:5px;">
                         <input type="hidden" id="conference_id" value="@conference.id" >
@@ -84,6 +83,7 @@
                         <input type="text" class="input-xlarge" id="input_form_add_url" placeholder="Website URL">
                         <a class="btn" href="#" id="submit_add_url">Add</a>
                     </form>
+					}
                 </div>
                 <div class="vertical-spacing-10"></div>
                 <ul class="unstyled" id="confLinks">
@@ -95,22 +95,20 @@
                 <!-- Comments -->
                 <div class="vertical-spacing-30"></div>
                 <div class="row">
-                    <div class="span6"><h3>Comments</h3></div>
-                    <div class="span2">
-                        <button id="btn_show_new_comment" class="btn-mini" type="submit"><i class="icon-edit"></i> New comment</button>
+                    <div class="span6"><h3>Comments (@comments.size)</h3></div>
+                    <div>
+                    	@if(request.session.get("userId").isDefined) {
+                    	<div class="vertical-spacing-30"></div>
+                    	<form class="well span7" id="add_comment_form" style="padding:2px;">
+                    		<input type="hidden" id="user_id" value="@request.session.get("userId").get" >
+                    		<textarea class="input-xlarge span7" id="comment_field" rows="1" placeholder="Add a comment..." style="margin-bottom:0px;"></textarea>
+                    		<label class="checkbox" style="display:none;float:left;" id="xx">
+                    			<input type="checkbox"> I participated to the conference
+                    		</label>
+                    		<a class="btn btn-mini" href="#" id="submit_add_comment" style="display:none;margin-top:5px;"><i class="icon-pencil"></i> Post</a>
+                    	</form>
+                    	}
                     </div>
-                    <form class="well span7 form-horizontal" id="add_comment_form" style="display:none;padding-top:5px;padding-bottom:5px;">
-                        <input type="hidden" id="conference_id" value="@conference.id" >
-                        <label>User name: </label>
-                    	<div class="control-group">
-                        	<input type="text" class="input-xlarge" id="formAddUrlLabel" placeholder="Label">
-                    	</div>
-                        <label>Content: </label>
-                        <div class="control-group">
-                        	<textarea class="input-xlarge span4" id="comment" rows="5" placeholder="Your comment..."></textarea>
-                    	</div>
-                        <a class="btn" href="#" id="submit_add_url">Add</a>
-                    </form>
                 </div>
                 <div class="vertical-spacing-10"></div>
                 <ul class="unstyled" id="confLinks">

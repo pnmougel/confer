@@ -10,6 +10,7 @@ import models.Conference
 import models.Publisher
 import models.Link
 import models.Comment
+import java.util.Date
 
 object Application extends Controller {
 	
@@ -133,6 +134,23 @@ object Application extends Controller {
         )
     }
     
+    val commentForm = Form(
+        tuple(
+            "conference_id" -> number,
+            "user_id" -> number,
+            "content" -> text))
+    
+    def addComment = Action { implicit request =>
+        println("test")
+        commentForm.bindFromRequest.fold(
+        	errors => BadRequest("How did you manage that ?"),
+        	comment => {
+        	    val date = new Date()
+        	    Comment.create(comment._1, comment._2, comment._3, date)
+        	    Ok("Comment added")
+        	}
+        )
+    }
     // -- Javascript routing
     
     /*

@@ -28,7 +28,6 @@ $("#btn_show_new_comment").click( ->
     $("#add_comment_form").slideToggle("fast")
 )
 
-
 $("#btn_show_login").click( -> 
     $("#form_login").slideToggle("fast")
 )
@@ -106,5 +105,31 @@ window.deleteUrl = (id) ->
     $('#link_' + id).hide("slow");
 
 
+$("#submit_add_comment").click( ->
+    $.ajax(
+        url: '/comment'
+        type: 'POST'
+        data: 
+            conference_id: $("#conference_id").val()
+            user_id: $("#user_id").val()
+            content: $("#comment_field").val()
+        success: (data) ->
+            $('#confLinks').append(data)
+            $(".add_url_form").slideToggle("fast")
+        error: (data) -> 
+            message.addError(data.responseText)
+        complete: (data, x, e) -> 
+    )
+)
 
+$("#comment_field").click( ->
+    if $("#comment_field").attr("rows") != "5"
+        $("#submit_add_comment").show()
+    $("#comment_field").attr("rows", 5)
+    
+    
+)
+$("#comment_field").blur( ->
+    $("#comment_field").attr("rows", 1)
+)
         

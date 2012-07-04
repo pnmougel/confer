@@ -29,3 +29,5 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 POST    /user/login                 controllers.User.login
 POST    /user/add                   controllers.User.add
 GET     /user/logout                controllers.User.logout
+
+POST    /comment                    controllers.Application.addComment()
