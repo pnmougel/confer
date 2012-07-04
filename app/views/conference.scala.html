@@ -1,0 +1,123 @@
+@(conference: Conference, links: List[Link], comments: List[Comment])(implicit request: RequestHeader)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+    
+
+@main(request, "Rainbow") {
+    <div class="container">
+        <div class="row">
+            <div class="span8 offset2">
+                <h2>@conference.shortName</h2>
+                        <h4>@conference.name</h4>
+                        <hr/>
+                        <div id="comm"></div>
+                <div class="row">
+                    <div class="span5">
+                        <h5>@conference.conferenceType on @conference.categoryName</h5>
+		                <h5>Started on @conference.yearSince</h5>
+		                <h5>Publisher IEEE</h5>
+		                @conference.description
+	                </div>
+	                <div class="span2 well" >
+	                   <h5>Average</h5>
+	                   <div class="row">
+	                       <div class="span1">Avg. Rank</div>
+                           <div class="span1"><span class="badge badge-success" style="font-size:10pt">A+</span></div>
+                       </div>
+                       <div class="row">
+	                       <div class="span1">Score</div>
+                           <div class="span1"><h4>4.5 / 5</h4></div>
+	                   </div>
+	                   <div class="vertical-spacing-10"></div>
+	                   <h5>User</h5>
+                       <div class="row">
+                           <div class="span1">User Rank</div>
+                           <div class="span1"><span class="badge badge-success" style="font-size:10pt">A+</span></div>
+                       </div>
+	                   <div class="row">
+                           <div class="span1">Score</div>
+                           <div class="span1"><h4>4.2 / 5</h4></div>
+                       </div>
+                       
+	                </div>
+                </div>
+                
+                <div class="vertical-spacing-30"></div>
+                <h3>Scores</h3>
+                <div class="row">
+                    <div class="span4">
+                        <h5>External Ranking</h5>
+                        <div class="vertical-spacing-10"></div>
+                        <ul class="unstyled">
+                            <li>@snippets.uservote("A+", 30, 12)</li>
+                            <li>@snippets.uservote("A", 20, 12)</li>
+                            <li>@snippets.uservote("B", 40, 12)</li>
+                            <li>@snippets.uservote("C", 10, 12)</li>
+                            <li>@snippets.uservote("0", 0, 0)</li>
+                        </ul>
+                    </div>
+                    <div class="span4">
+                        <h5>User Ranking</h5>
+                        <div class="vertical-spacing-10"></div>
+                        <ul class="unstyled">
+                            <li>@snippets.uservote("A+", 30, 12)</li>
+                            <li>@snippets.uservote("A", 20, 12)</li>
+                            <li>@snippets.uservote("B", 40, 12)</li>
+                            <li>@snippets.uservote("C", 10, 12)</li>
+                            <li>@snippets.uservote("0", 0, 0)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Links -->
+                <div class="vertical-spacing-30"></div>
+                <div class="row">
+                    <div class="span6"><h3>Links</h3></div>
+                    <div class="span2">
+                        <button id="btn_show_new_url" class="btn-mini" type="submit"><i class="icon-edit"></i> Add new link</button>
+                    </div>
+                    <form class="well span7 form-inline add_url_form" style="display:none;padding-top:5px;padding-bottom:5px;">
+                        <input type="hidden" id="conference_id" value="@conference.id" >
+                        <input type="text" class="input-small" id="formAddUrlLabel" placeholder="Label">
+                        <input type="text" class="input-xlarge" id="input_form_add_url" placeholder="Website URL">
+                        <a class="btn" href="#" id="submit_add_url">Add</a>
+                    </form>
+                </div>
+                <div class="vertical-spacing-10"></div>
+                <ul class="unstyled" id="confLinks">
+                    @links.map { link => 
+                        @snippets.link(link)
+                    }
+                </ul>
+                
+                <!-- Comments -->
+                <div class="vertical-spacing-30"></div>
+                <div class="row">
+                    <div class="span6"><h3>Comments</h3></div>
+                    <div class="span2">
+                        <button id="btn_show_new_comment" class="btn-mini" type="submit"><i class="icon-edit"></i> New comment</button>
+                    </div>
+                    <form class="well span7 form-horizontal" id="add_comment_form" style="display:none;padding-top:5px;padding-bottom:5px;">
+                        <input type="hidden" id="conference_id" value="@conference.id" >
+                        <label>User name: </label>
+                        <input type="text" class="input-xlarge" id="formAddUrlLabel" placeholder="Label">
+                        <label>Content: </label>
+                        <textarea class="input-xlarge span4" id="comment" rows="5" placeholder="Your comment..."></textarea>
+                        <a class="btn" href="#" id="submit_add_url">Add</a>
+                    </form>
+                </div>
+                <div class="vertical-spacing-10"></div>
+                <ul class="unstyled" id="confLinks">
+                    @comments.map { comment => 
+                        @snippets.comment(comment)
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+}

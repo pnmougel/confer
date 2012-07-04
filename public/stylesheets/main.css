@@ -1,0 +1,68 @@
+body {
+    padding-top: 80px;
+    /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+div .vertical-spacing-30 {
+	height: 30px;
+}
+div .vertical-spacing-20 {
+    height: 16px;
+}
+div .vertical-spacing-10 {
+    height: 10px;
+}
+
+div .vertical-spacing-200 {
+    height: 200px;
+}
+
+div .vertical-spacing-150 {
+    height: 150px;
+}
+
+.hidden {
+	display:none;
+}
+
+.emptydot {
+	font-size: 13pt;
+}
+
+#form_new_conf {
+	width:380px;
+	padding-left:0px;
+	margin-bottom:20px;
+	padding-bottom:0px;
+}
+
+#form_new_conf .control-label {
+	width: 100px;
+}
+
+#form_new_conf .controls {
+	padding-left:120px;
+	margin-left:0px;
+}
+
+#form_login {
+    padding-top:8px;
+    padding-bottom:6px;
+    padding-left:345px;
+}
+
+#messageAreaTop {
+	position:fixed;
+    left:0px;
+    right:0px;
+    top:42px;
+}
+
+div .alert {
+	margin-bottom: 0px;
+}
+}

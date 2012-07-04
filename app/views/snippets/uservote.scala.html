@@ -1,0 +1,36 @@
+@(rankLetter: String, percentage: Int, nbVotes: Int)
+
+@if(nbVotes > 0) {
+<div class="row">
+    <div class="span1" style="text-align:left">
+        @rankLetter match {
+            case "A+" => {
+                <span class="badge badge-success" >@rankLetter</span>
+            }
+            case "A" => {
+                <span class="badge badge-warning" style="width:50px;">@rankLetter</span>
+            }
+            case "B" => {
+                <span class="badge badge-info" >@rankLetter</span>
+            }
+            case "C" => {
+                <span class="badge badge-important" >@rankLetter</span>
+            }
+            case "0" => {
+                <span class="badge badge-inverse" >@rankLetter</span>
+            }
+            case _ => {
+                <span class="badge" >?</span>
+            }
+        }
+    </div>
+    <div class="span1">
+        <div class="progress progress-info">
+            <div class="bar" style="width: @percentage%;"></div>
+        </div>
+    </div>
+    <div class="span2">
+        @percentage% - @nbVotes votes
+    </div>
+</div>
+}

@@ -1,0 +1,79 @@
+@(searchForm: Form[String], query: String, fields: List[Category])(implicit request: RequestHeader)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+    
+@main(request, "Rainbow") {
+    
+    <div class="container">
+        <div class="vertical-spacing-150"></div>
+        <div class="row">
+            <div class="span6 offset4">
+                
+                <h1 style="font-size: 45pt">Sorry,</h1>
+                <div class="vertical-spacing-30"></div>
+                <p>No conference or journal matched your query</p>
+                
+                <button class="btn btn-primary btn-large" type="submit" id="btn_show_new_conf">Add a new one</button>
+                <div class="vertical-spacing-20"></div>
+                @helper.form(routes.Application.addConf, 
+                    'class -> "well form-horizontal", 
+                    'id -> "form_new_conf", 
+                    'style -> "display:none;") {
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label"  for="fullName">Full Name</label>
+                            <div class="controls">
+                                <input type="text" class="input" id="fullName" name="fullName" placeholder="@query">
+                                <p class="help-block">e.g., Very Large Data Bases</p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="shortName">Short Name</label>
+                            <div class="controls">
+                                <input type="text" class="input" id="shortName" name="shortName" placeholder="@query">
+                                <p class="help-block">e.g., VLDB</p> 
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="type" >Type</label>
+                            <div class="controls">
+                                <select id="type" name="type" >
+                                    <option value="1">Journal</option>
+                                    <option value="2">International Conference</option>
+                                    <option value="3">National Conference</option>
+                                    <option value="4">International Workshop</option>
+                                    <option value="5">National Workshop</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="field">Field</label>
+                            <div class="controls">
+                                <select id="field" name="field" >
+                                    @fields.map { field =>
+                                        <option value="@field.id">@field.name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <button type="submit" class="btn">Create</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                }
+                <p>Or try a new search</p>
+                
+				@helper.form(routes.Application.search, 'class -> "form-inline") {
+	                <div class="input-append">
+	                    <input type="text" id="query" name="query" value="" class="span3" placeholder="Search a conference...">
+	                    <button class="btn" type="submit"><i class="icon-search"></i></button>
+					</div>
+				}
+            </div>
+        </div>
+    </div>    
+}

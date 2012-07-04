@@ -1,0 +1,16 @@
+@(conference: Conference)
+
+<li>
+    <div class="vertical-spacing-30"></div>
+    <div>
+        <h3><a href="/conference/@conference.id">
+        @conference.name 
+        @if(conference.shortName.isDefined) {
+            (@conference.shortName.get)
+        }
+        </a>
+        </h3>
+        <h5>@conference.conferenceType on @conference.categoryName</h5>
+    </div>
+</li>
+

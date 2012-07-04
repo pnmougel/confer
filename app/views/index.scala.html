@@ -1,0 +1,35 @@
+@(nbConference: Long, searchForm: Form[String])(implicit request: RequestHeader)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+    
+@main(request, "Rainbow") {
+    
+    <div class="container">
+        <div class="vertical-spacing-200"></div>
+        <div class="row">
+            <div class="span6 offset4">
+                <h1 style="font-size: 45pt">Rainbow</h1>
+                <div class="vertical-spacing-30"></div>
+                <span class="badge badge-success" style="font-size: 13pt">&nbsp;</span>
+                <span class="badge badge-warning" style="font-size: 13pt">&nbsp;</span>
+                <span class="badge badge-info" style="font-size: 13pt">&nbsp;</span>
+                <span class="badge badge-important" style="font-size: 13pt">&nbsp;</span>
+                <div class="vertical-spacing-20"></div>
+                <h3>Collaborative</h3>
+                <h3>Journals &amp; Conferences</h3>
+                <h3>Ranking</h3>
+                <div class="vertical-spacing-20"></div>
+                
+				@helper.form(routes.Application.search, 'class -> "form-inline") {
+	                <div class="input-append">
+	                    <input type="text" id="query" name="query" value="" class="span3" placeholder="Search a conference...">
+	                    <button class="btn" type="submit"><i class="icon-search"></i></button>
+					</div>
+				}
+                @nbConference conference@if(nbConference > 1) {s} and journal@if(nbConference > 1) {s} referenced
+            </div>
+        </div>
+    </div>
+}

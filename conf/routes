@@ -1,0 +1,31 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index
+GET     /index                      controllers.Application.index
+GET     /home                       controllers.Application.index
+
+# Conference
+GET     /conference/:id             controllers.Application.conference(id: Long)
+
+GET     /search                     controllers.Application.search()
+POST    /addConf                    controllers.Application.addConf()
+
+# Links
+POST    /link                       controllers.Application.addLink()
+DELETE  /link/:id                   controllers.Application.deleteLink(id: Long)
+
+# Administration
+GET     /admin                      controllers.admin.Admin.index
+GET     /admin/list                 controllers.admin.Admin.list
+
+GET     /build                      controllers.Application.buildData
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+POST    /user/login                 controllers.User.login
+POST    /user/add                   controllers.User.add
+GET     /user/logout                controllers.User.logout
