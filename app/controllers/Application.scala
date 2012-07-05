@@ -11,6 +11,7 @@ import models.Publisher
 import models.Link
 import models.Comment
 import java.util.Date
+import org.joda.time.format.ISODateTimeFormat
 
 object Application extends Controller {
 	
@@ -46,6 +47,12 @@ object Application extends Controller {
         Link.delete(id)
         Ok
     }
+    
+    def deleteComment(id: Long) = Action { 
+        Comment.delete(id)
+        Ok
+    }
+    
     
     def buildData = Action { implicit request =>
         // Add some publishers
@@ -147,7 +154,9 @@ object Application extends Controller {
         	comment => {
         	    val date = new Date()
         	    Comment.create(comment._1, comment._2, comment._3, date)
-        	    Ok("Comment added")
+        	    val insertedComment = Comment.getByDate(date).get
+        	    val userId = if(request.session.get("userId").isDefined) request.session.get("userId").get.toInt else -1
+        	    Ok(views.html.snippets.comment(insertedComment, userId))
         	}
         )
     }

@@ -5,14 +5,19 @@ import anorm.SqlParser._
 import play.api.db._
 import play.api.Play.current
 import java.util.Date
+import java.text.SimpleDateFormat
 
-case class Comment(id: Long, userId: Long, conferenceId: Long, content: String, date: Date)
+case class Comment(id: Long, userId: Long, conferenceId: Long, content: String, date: Date, isoDate: String)
 
 object Comment {
 
     val comment = {
-        get[Long]("id") ~ get[Long]("userId") ~ get[Long]("conference_id") ~ get[String]("content") ~ get[Date]("date") map {
-            case id ~ userId ~ conferenceId ~ content ~ date => Comment(id, userId, conferenceId, content, date)
+        get[Long]("id") ~ get[Long]("iuser_id") ~ get[Long]("conference_id") ~ get[String]("content") ~ get[Date]("date") map {
+            case id ~ userId ~ conferenceId ~ content ~ date => {
+                val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                val isoDate = dateFormat.format(date)
+            	Comment(id, userId, conferenceId, content, date, isoDate)
+            } 
         }
     }
     
@@ -25,7 +30,7 @@ object Comment {
     }
     
     def getByConferenceId(conferenceId : Long): List[Comment] = DB.withConnection { implicit c =>
-        SQL("SELECT * FROM comment WHERE conference_id = {conferenceId}").on('conferenceId -> conferenceId).as(comment *)
+        SQL("SELECT * FROM comment WHERE conference_id = {conferenceId} ORDER BY date DESC").on('conferenceId -> conferenceId).as(comment *)
     }
 
     

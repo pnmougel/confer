@@ -42,7 +42,7 @@
 	                </div>
                 </div>
                 
-                <div class="vertical-spacing-30"></div>
+                <div class="vertical-spacing-20"></div>
                 <h3>Scores</h3>
                 <div class="row">
                     <div class="span4">
@@ -70,7 +70,6 @@
                 </div>
                 
                 <!-- Links -->
-                <div class="vertical-spacing-30"></div>
                 <div class="row">
                     <div class="span6"><h3>Links</h3></div>
 					@if(request.session.get("userId").isDefined) {
@@ -93,27 +92,31 @@
                 </ul>
                 
                 <!-- Comments -->
-                <div class="vertical-spacing-30"></div>
+                <div class="vertical-spacing-20"></div>
                 <div class="row">
-                    <div class="span6"><h3>Comments (@comments.size)</h3></div>
+                    <div class="span7"><h3>Comments (<span id="nb_comments">@comments.size</span>)</h3></div>
                     <div>
                     	@if(request.session.get("userId").isDefined) {
                     	<div class="vertical-spacing-30"></div>
-                    	<form class="well span7" id="add_comment_form" style="padding:2px;">
+                    	<form class="well span7" id="add_comment_form" style="padding:7px;">
                     		<input type="hidden" id="user_id" value="@request.session.get("userId").get" >
                     		<textarea class="input-xlarge span7" id="comment_field" rows="1" placeholder="Add a comment..." style="margin-bottom:0px;"></textarea>
                     		<label class="checkbox" style="display:none;float:left;" id="xx">
                     			<input type="checkbox"> I participated to the conference
                     		</label>
-                    		<a class="btn btn-mini" href="#" id="submit_add_comment" style="display:none;margin-top:5px;"><i class="icon-pencil"></i> Post</a>
+                    		<button class="btn btn-mini" id="submit_add_comment" style="display:none;margin-top:5px;"><i class="icon-pencil"></i> Post</button>
                     	</form>
                     	}
                     </div>
                 </div>
                 <div class="vertical-spacing-10"></div>
-                <ul class="unstyled" id="confLinks">
+                <ul class="unstyled" id="confComments">
                     @comments.map { comment => 
-                        @snippets.comment(comment)
+                    	@if(request.session.get("userId").isDefined) {
+                    		@snippets.comment(comment, request.session.get("userId").get.toInt)
+                    	} else {
+                    	    @snippets.comment(comment, -1)
+                    	}
                     }
                 </ul>
             </div>

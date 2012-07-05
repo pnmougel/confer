@@ -31,3 +31,4 @@ POST    /user/add                   controllers.User.add
 GET     /user/logout                controllers.User.logout
 
 POST    /comment                    controllers.Application.addComment()
+DELETE  /comment/:id                controllers.Application.deleteComment(id: Long)
