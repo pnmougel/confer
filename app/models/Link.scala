@@ -4,23 +4,24 @@ import anorm._
 import anorm.SqlParser._
 import play.api.db._
 import play.api.Play.current
+import java.util.Date
 
-case class Link(id: Long, conferenceId: Long, url: String, name: String)
+case class Link(id: Long, conferenceId: Long, url: String, label: String)
 
 object Link {
 
     val link = {
         get[Long]("id") ~ get[Long]("conference_id") ~ get[String]("url") ~ get[String]("name") map {
-            case id ~ conferenceId ~ url ~ name => Link(id, conferenceId, url, name)
+            case id ~ conferenceId ~ url ~ label => Link(id, conferenceId, url, label)
         }
+    }
+    
+    def getByDate(date : Date) : Option[Link] = DB.withConnection { implicit c =>
+        SQL("SELECT * FROM link WHERE date = {date}").on('date -> date).as(Link.link.singleOpt)
     }
     
     def getById(id: Long) : Option[Link] = DB.withConnection { implicit c =>
         SQL("SELECT * FROM link WHERE id = {id}").on('id -> id).as(Link.link.singleOpt)
-    }
-    
-    def getByConfIdAndUrl(conferenceId: Long, url: String) : Option[Link] = DB.withConnection { implicit c =>
-        SQL("SELECT * FROM link WHERE conference_id = {id} AND url = {url}").on('id -> conferenceId, 'url -> url).as(Link.link.singleOpt)
     }
     
     def getByConferenceId(conferenceId: Long) : List[Link] = DB.withConnection { implicit c =>
@@ -30,13 +31,14 @@ object Link {
     def all(): List[Link] = DB.withConnection { implicit c =>
         SQL("SELECT * FROM link").as(link *)
     }
-
-    def create(conferenceId : Long, url: String, name: String = "") {
+    
+    def create(conferenceId : Long, url: String, label: String, date : Date) {
         DB.withConnection { implicit c =>
-            SQL("INSERT INTO link (conference_id, url, name) values ({conferenceId}, {url}, {name})").on(
+            SQL("INSERT INTO link (conference_id, url, name, date) values ({conferenceId}, {url}, {label}, {date})").on(
                 'conferenceId -> conferenceId,
                 'url -> url,
-                'name -> name).executeUpdate()
+                'label -> label,
+                'date -> date).executeUpdate()
         }
     }
 

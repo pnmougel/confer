@@ -38,7 +38,7 @@ object Comment {
         SQL("SELECT * FROM comment").as(comment *)
     }
 
-    def create(conferenceId : Long, userId : Long, content: String, date: Date = new Date()) {
+    def create(conferenceId : Long, userId : Long, content: String, date: Date) {
         DB.withConnection { implicit c =>
             SQL("INSERT INTO comment (iuser_id, conference_id, content, date) values " +
             		"({userId}, {conferenceId}, {content}, {date})").on(

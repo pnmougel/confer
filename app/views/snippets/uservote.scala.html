@@ -4,20 +4,17 @@
 <div class="row">
     <div class="span1" style="text-align:left">
         @rankLetter match {
-            case "A+" => {
+            case "A" => {
                 <span class="badge badge-success" >@rankLetter</span>
             }
-            case "A" => {
+            case "B" => {
                 <span class="badge badge-warning" style="width:50px;">@rankLetter</span>
             }
-            case "B" => {
+            case "C" => {
                 <span class="badge badge-info" >@rankLetter</span>
             }
-            case "C" => {
+            case "X" => {
                 <span class="badge badge-important" >@rankLetter</span>
-            }
-            case "0" => {
-                <span class="badge badge-inverse" >@rankLetter</span>
             }
             case _ => {
                 <span class="badge" >?</span>
@@ -30,7 +27,7 @@
         </div>
     </div>
     <div class="span2">
-        @percentage% - @nbVotes votes
+        @percentage% - @nbVotes vote@if(nbVotes > 1) {s}
     </div>
 </div>
 }

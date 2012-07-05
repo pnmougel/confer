@@ -3,9 +3,7 @@
 @import helper._
 @import helper.twitterBootstrap._
 
-    
 @main(request, "Rainbow") {
-    
     <div class="container">
         <div class="vertical-spacing-150"></div>
         <div class="row">
@@ -67,7 +65,7 @@
                 }
                 <p>Or try a new search</p>
                 
-				@helper.form(routes.Application.search, 'class -> "form-inline") {
+				@helper.form(routes.Search.search, 'class -> "form-inline") {
 	                <div class="input-append">
 	                    <input type="text" id="query" name="query" value="" class="span3" placeholder="Search a conference...">
 	                    <button class="btn" type="submit"><i class="icon-search"></i></button>

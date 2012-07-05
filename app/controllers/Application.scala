@@ -4,7 +4,6 @@ import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import models.Task
 import models.Category
 import models.Conference
 import models.Publisher
@@ -24,35 +23,6 @@ object Application extends Controller {
             "shortName" -> text,
             "type" -> number,
             "field" -> number))
-    
-    
-    val addLinkForm = Form(
-        tuple(
-            "url" -> text,
-            "conference_id" -> number))
-    
-    def addLink = Action {  implicit request => 
-        addLinkForm.bindFromRequest.fold(
-            errors => BadRequest(""),
-            params => {
-                Link.create(params._2, params._1)
-                // Get the id !!!
-                val newLink = Link.getByConfIdAndUrl(params._2, params._1)
-                Ok(views.html.snippets.link(Link(newLink.get.id, params._2, params._1, "")))
-            }
-        )
-    }
-    
-    def deleteLink(id: Long) = Action { 
-        Link.delete(id)
-        Ok
-    }
-    
-    def deleteComment(id: Long) = Action { 
-        Comment.delete(id)
-        Ok
-    }
-    
     
     def buildData = Action { implicit request =>
         // Add some publishers
@@ -75,9 +45,6 @@ object Application extends Controller {
         
         // Add some links
         var confPAKDD = Conference.search("PAKDD")
-        if(confPAKDD.size == 1) {
-            Link.create(confPAKDD(0).id, "http://www.informatik.uni-trier.de/~ley/db/conf/pakdd/index.html")
-        }
         
         Ok("Data Created, but you better check...")
     }
@@ -141,25 +108,6 @@ object Application extends Controller {
         )
     }
     
-    val commentForm = Form(
-        tuple(
-            "conference_id" -> number,
-            "user_id" -> number,
-            "content" -> text))
-    
-    def addComment = Action { implicit request =>
-        println("test")
-        commentForm.bindFromRequest.fold(
-        	errors => BadRequest("How did you manage that ?"),
-        	comment => {
-        	    val date = new Date()
-        	    Comment.create(comment._1, comment._2, comment._3, date)
-        	    val insertedComment = Comment.getByDate(date).get
-        	    val userId = if(request.session.get("userId").isDefined) request.session.get("userId").get.toInt else -1
-        	    Ok(views.html.snippets.comment(insertedComment, userId))
-        	}
-        )
-    }
     // -- Javascript routing
     
     /*

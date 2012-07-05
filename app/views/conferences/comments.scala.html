@@ -1,0 +1,36 @@
+@(comments: List[Comment], request: RequestHeader)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+<!-- Comments -->
+<div class="vertical-spacing-20"></div>
+<div class="row">
+	<div class="span7"><h3>Comments (<span id="nb_comments">@comments.size</span>)</h3></div>
+    <div>
+    @if(request.session.get("userId").isDefined) {
+    	<div class="vertical-spacing-30"></div>
+    	<form class="well span7" id="add_comment_form" style="padding:7px;">
+			<input type="hidden" id="user_id" value="@request.session.get("userId").get" >
+            <textarea class="input-xlarge span7" id="comment_field" rows="1" placeholder="Add a comment..." style="margin-bottom:0px;"></textarea>
+            <button class="btn btn-mini" id="submit_add_comment" style="display:none;margin-top:5px;"><i class="icon-pencil"></i> Post</button>
+		</form>
+	}
+	</div>
+</div>
+
+<!-- List of comments -->
+<div class="vertical-spacing-10"></div>
+@if(comments.size == 0) {
+    No comments to display
+} else {
+<ul class="unstyled" id="confComments">
+	@comments.map { comment => 
+    	@if(request.session.get("userId").isDefined) {
+    		@snippets.comment(comment, request.session.get("userId").get.toInt)
+    	} else {
+    	    @snippets.comment(comment, -1)
+    	}
+    }
+</ul>
+}

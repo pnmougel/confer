@@ -9,13 +9,13 @@ GET     /home                       controllers.Application.index
 
 # Conference
 GET     /conference/:id             controllers.Application.conference(id: Long)
-
-GET     /search                     controllers.Application.search()
 POST    /addConf                    controllers.Application.addConf()
 
+GET     /search                     controllers.Search.search()
+
 # Links
-POST    /link                       controllers.Application.addLink()
-DELETE  /link/:id                   controllers.Application.deleteLink(id: Long)
+POST    /link                       controllers.conference.Links.addLink()
+DELETE  /link/:id                   controllers.conference.Links.deleteLink(id: Long)
 
 # Administration
 GET     /admin                      controllers.admin.Admin.index
@@ -30,5 +30,5 @@ POST    /user/login                 controllers.User.login
 POST    /user/add                   controllers.User.add
 GET     /user/logout                controllers.User.logout
 
-POST    /comment                    controllers.Application.addComment()
-DELETE  /comment/:id                controllers.Application.deleteComment(id: Long)
+POST    /comment                    controllers.conference.Comments.addComment()
+DELETE  /comment/:id                controllers.conference.Comments.deleteComment(id: Long)

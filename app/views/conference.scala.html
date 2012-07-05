@@ -7,10 +7,16 @@
     <div class="container">
         <div class="row">
             <div class="span8 offset2">
-                <h2>@conference.shortName</h2>
+				<h2>@conference.shortName</h2>
+                <div class="row">
+                    <div class="span6">
                         <h4>@conference.name</h4>
-                        <hr/>
-                        <div id="comm"></div>
+					</div>
+					<div class="span2">
+						<button id="btn_show_edit" class="btn" type="submit"><i class="icon-pencil"></i> Edit</button>
+					</div>
+				</div>
+				<hr/>
                 <div class="row">
                     <div class="span5">
                         <h5>@conference.conferenceType on @conference.categoryName</h5>
@@ -22,7 +28,7 @@
 	                   <h5>Average</h5>
 	                   <div class="row">
 	                       <div class="span1">Avg. Rank</div>
-                           <div class="span1"><span class="badge badge-success" style="font-size:10pt">A+</span></div>
+                           <div class="span1"><span class="badge badge-success" style="font-size:10pt">A</span></div>
                        </div>
                        <div class="row">
 	                       <div class="span1">Score</div>
@@ -32,97 +38,27 @@
 	                   <h5>User</h5>
                        <div class="row">
                            <div class="span1">User Rank</div>
-                           <div class="span1"><span class="badge badge-success" style="font-size:10pt">A+</span></div>
+                           <div class="span1"><span class="badge badge-warning" style="font-size:10pt">B</span></div>
                        </div>
 	                   <div class="row">
                            <div class="span1">Score</div>
-                           <div class="span1"><h4>4.2 / 5</h4></div>
+                           <div class="span1"><h4>3.8 / 5</h4></div>
                        </div>
                        
 	                </div>
                 </div>
+
+                <input type="hidden" id="conference_id" value="@conference.id">
                 
-                <div class="vertical-spacing-20"></div>
-                <h3>Scores</h3>
-                <div class="row">
-                    <div class="span4">
-                        <h5>External Ranking</h5>
-                        <div class="vertical-spacing-10"></div>
-                        <ul class="unstyled">
-                            <li>@snippets.uservote("A+", 30, 12)</li>
-                            <li>@snippets.uservote("A", 20, 12)</li>
-                            <li>@snippets.uservote("B", 40, 12)</li>
-                            <li>@snippets.uservote("C", 10, 12)</li>
-                            <li>@snippets.uservote("0", 0, 0)</li>
-                        </ul>
-                    </div>
-                    <div class="span4">
-                        <h5>User Ranking</h5>
-                        <div class="vertical-spacing-10"></div>
-                        <ul class="unstyled">
-                            <li>@snippets.uservote("A+", 30, 12)</li>
-                            <li>@snippets.uservote("A", 20, 12)</li>
-                            <li>@snippets.uservote("B", 40, 12)</li>
-                            <li>@snippets.uservote("C", 10, 12)</li>
-                            <li>@snippets.uservote("0", 0, 0)</li>
-                        </ul>
-                    </div>
-                </div>
-                
+				<!-- Scores -->
+				@conferences.scores(request)
+
                 <!-- Links -->
-                <div class="row">
-                    <div class="span6"><h3>Links</h3></div>
-					@if(request.session.get("userId").isDefined) {
-                    <div class="span2">
-                        <button id="btn_show_new_url" class="btn btn-mini" type="submit"><i class="icon-edit"></i> Add</button>
-                    </div>
-                    <form class="well span7 form-inline add_url_form" style="display:none;padding-top:5px;padding-bottom:5px;">
-                        <input type="hidden" id="conference_id" value="@conference.id" >
-                        <input type="text" class="input-small" id="formAddUrlLabel" placeholder="Label">
-                        <input type="text" class="input-xlarge" id="input_form_add_url" placeholder="Website URL">
-                        <a class="btn" href="#" id="submit_add_url">Add</a>
-                    </form>
-					}
-                </div>
-                <div class="vertical-spacing-10"></div>
-                <ul class="unstyled" id="confLinks">
-                    @links.map { link => 
-                        @snippets.link(link)
-                    }
-                </ul>
+				@conferences.links(links, request)
                 
                 <!-- Comments -->
-                <div class="vertical-spacing-20"></div>
-                <div class="row">
-                    <div class="span7"><h3>Comments (<span id="nb_comments">@comments.size</span>)</h3></div>
-                    <div>
-                    	@if(request.session.get("userId").isDefined) {
-                    	<div class="vertical-spacing-30"></div>
-                    	<form class="well span7" id="add_comment_form" style="padding:7px;">
-                    		<input type="hidden" id="user_id" value="@request.session.get("userId").get" >
-                    		<textarea class="input-xlarge span7" id="comment_field" rows="1" placeholder="Add a comment..." style="margin-bottom:0px;"></textarea>
-                    		<label class="checkbox" style="display:none;float:left;" id="xx">
-                    			<input type="checkbox"> I participated to the conference
-                    		</label>
-                    		<button class="btn btn-mini" id="submit_add_comment" style="display:none;margin-top:5px;"><i class="icon-pencil"></i> Post</button>
-                    	</form>
-                    	}
-                    </div>
-                </div>
-                <div class="vertical-spacing-10"></div>
-                <ul class="unstyled" id="confComments">
-                    @comments.map { comment => 
-                    	@if(request.session.get("userId").isDefined) {
-                    		@snippets.comment(comment, request.session.get("userId").get.toInt)
-                    	} else {
-                    	    @snippets.comment(comment, -1)
-                    	}
-                    }
-                </ul>
+                @conferences.comments(comments, request)
             </div>
         </div>
     </div>
-    
-    
-    
 }
