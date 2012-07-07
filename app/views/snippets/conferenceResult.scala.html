@@ -6,7 +6,9 @@
         <h4><a href="/conference/@conference.id">
         @conference.name 
         @if(conference.shortName.isDefined) {
-            (@conference.shortName.get)
+            @if(conference.shortName.get != "") {
+            	(@conference.shortName.get)
+            }
         }
         </a>
         </h4>

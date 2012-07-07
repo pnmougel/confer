@@ -20,10 +20,10 @@
 </div>
 
 <!-- List of comments -->
-<div class="vertical-spacing-10"></div>
 @if(comments.size == 0) {
-    No comments to display
+    <p>No comments to display</p>
 } else {
+<div class="vertical-spacing-10"></div>
 <ul class="unstyled" id="confComments">
 	@comments.map { comment => 
     	@if(request.session.get("userId").isDefined) {

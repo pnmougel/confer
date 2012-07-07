@@ -1,17 +1,13 @@
 package controllers.conference
 
-import play.api._
-import play.api.mvc._
-import play.api.data._
-import play.api.data.Forms._
-import models.Category
-import models.Conference
-import models.Publisher
-import models.Link
-import models.Comment
 import java.util.Date
-import org.joda.time.format.ISODateTimeFormat
+
 import models.UserVote
+import play.api.data.Forms.number
+import play.api.data.Forms.tuple
+import play.api.data.Form
+import play.api.mvc.Action
+import play.api.mvc.Controller
 
 object Scores extends Controller {
 	
@@ -20,21 +16,32 @@ object Scores extends Controller {
             "conference_id" -> number,
             "user_id" -> number,
             "score" -> number))
-    
-    def addComment = Action { implicit request =>
+    val deleteVoteForm = Form(
+        tuple(
+            "conference_id" -> number,
+            "user_id" -> number))
+            
+    def addVote = Action { implicit request =>
         userScoreForm.bindFromRequest.fold(
         	errors => BadRequest("How did you manage that ?"),
         	userScore => {
         	    val date = new Date()
         	    UserVote.create(userScore._1, userScore._2, userScore._3, date)
-        	    Ok("")
+        	    val userVotes = UserVote.getUserVotesByConferenceId(userScore._1)
+        	    Ok(views.html.conferences.userScores(userVotes, request))
         	}
         )
     }
     
-    def deleteComment(userId: Long, conferenceId: Long) = Action { 
-        UserVote.delete(userId, conferenceId)
-        Ok
+    def deleteVote = Action { implicit request =>
+        deleteVoteForm.bindFromRequest.fold(
+        	errors => BadRequest("How did you manage that ?"),
+        	userScore => {
+        	    UserVote.delete(userScore._1, userScore._2)
+        	    val userVotes = UserVote.getUserVotesByConferenceId(userScore._1)
+        	    Ok(views.html.conferences.userScores(userVotes, request))
+        	}
+        )
     }
 }
 

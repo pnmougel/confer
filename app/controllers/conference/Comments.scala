@@ -4,7 +4,6 @@ import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import models.Category
 import models.Conference
 import models.Publisher
 import models.Link

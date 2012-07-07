@@ -1,9 +1,9 @@
-@(searchForm: Form[String], query: String, fields: List[Category])(implicit request: RequestHeader)
+@(searchForm: Form[String], query: String, fields: List[models.Field])(implicit request: RequestHeader)
 
 @import helper._
 @import helper.twitterBootstrap._
 
-@main(request, "Rainbow") {
+@main(request) {
     <div class="container">
         <div class="vertical-spacing-150"></div>
         <div class="row">

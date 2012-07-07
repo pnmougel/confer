@@ -47,5 +47,10 @@ object Link {
             SQL("DELETE FROM link WHERE id = {id}").on('id -> id).executeUpdate()
         }
     }
-
+    
+    def deleteAll() {
+        DB.withConnection { implicit c =>
+            SQL("DELETE FROM link").executeUpdate()
+        }
+    }
 }

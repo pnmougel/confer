@@ -2,12 +2,14 @@
 
 <li id="comment_@comment.id">
 	<div class="row">
-		<div class="span7" style="margin-bottom: 5px;padding-left:10px;"><h6><time class="timeago" datetime="@comment.isoDate"></time>:</h6></div>
+		<div class="span7" style="margin-bottom: 5px;padding-left:10px;">
+			<h6><time class="timeago" datetime="@comment.isoDate"></time> by @comment.user.pseudo:</h6>
+		</div>
 		<div class="well span7" style="padding:5px;padding-left:10px;margin-bottom: 15px;">
-@if(comment.userId == userId) {
-				<a class="close" href="#" rel="tooltip" onclick="deleteComment(@comment.id);return false;"title="Remove your comment">&times;</a>
+			@if(comment.userId == userId) {
+			<a class="close" href="#" onclick="deleteComment(@comment.id);return false;">&times;</a>
 			}
-<span>@comment.content</span>
+			<span>@comment.content</span>
 		</div>
 	</div>
 </li>

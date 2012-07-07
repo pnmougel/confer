@@ -4,7 +4,6 @@ import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import models.Category
 import models.Conference
 import models.Publisher
 import models.Link
@@ -19,7 +18,7 @@ object Links extends Controller {
             "conference_id" -> number,
             "label" -> text))
     
-    def addLink = Action {  implicit request => 
+    def addLink = Action { implicit request => 
         addLinkForm.bindFromRequest.fold(
             errors => BadRequest(""),
             params => {

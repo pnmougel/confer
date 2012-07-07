@@ -1,10 +1,10 @@
-@(searchForm: Form[String], query: String, conferences : List[Conference], fields: List[Category])(implicit request: RequestHeader)
+@(searchForm: Form[String], query: String, conferences : List[Conference], fields: List[models.Field])(implicit request: RequestHeader)
 
 @import helper._
 @import helper.twitterBootstrap._
 
     
-@main(request, "Rainbow") {
+@main(request) {
     <div class="container">
         <div class="vertical-spacing-30"></div>
         <div class="row">
@@ -28,14 +28,14 @@
                         <div class="control-group">
                             <label class="control-label"  for="fullName">Full Name</label>
                             <div class="controls">
-                                <input type="text" class="input" id="fullName" name="fullName" placeholder="@query">
+                                <input type="text" class="input" id="fullName" name="fullName" value="@query">
                                 <p class="help-block">e.g., Very Large Data Bases</p>
                             </div>
                         </div>
                         <div class="control-group">
                             <label class="control-label" for="shortName">Short Name</label>
                             <div class="controls">
-                                <input type="text" class="input" id="shortName" name="shortName" placeholder="@query">
+                                <input type="text" class="input" id="shortName" name="shortName" placeholder="Short name">
                                 <p class="help-block">e.g., VLDB</p> 
                             </div>
                         </div>

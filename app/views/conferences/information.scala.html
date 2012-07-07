@@ -1,0 +1,51 @@
+@(conference: Conference, request: RequestHeader)
+
+<div class="row">
+	<div class="span7">
+		<h2>
+		@if(conference.shortName.get.trim.size > 0) {
+			@conference.shortName
+			<h4>@conference.name</h4>
+		} else {
+			@conference.name
+		}
+		</h2>
+	</div>
+	@if(request.session.get("userId").isDefined) {
+	<div class="span1">
+		<button id="btn_show_edit" class="btn" type="submit"><i class="icon-pencil"></i> Edit</button>
+	</div>
+	}
+</div>
+<hr/>
+<div class="row">
+	<div class="span6">
+    	<h5>@conference.conferenceType on @conference.categoryName</h5>
+		@if(conference.yearSince.size != 0) {
+		    <h5>Started on @conference.yearSince</h5>
+		}
+		<h5>Published by @conference.publisherName</h5>
+		<p style="padding-right:20px;">@conference.description</p>
+	</div>
+	<div class="span2 well" style="padding:12px;margin:0px;">
+		<h5>Average</h5>
+	    <div class="row">
+	    	<div class="span1">Avg. Rank</div>
+            <div class="span1"><span class="badge badge-success" style="font-size:10pt">A</span></div>
+		</div>
+        <div class="row">
+			<div class="span1">Score</div>
+			<div class="span1"><h4>4.5 / 5</h4></div>
+		</div>
+	    <div class="vertical-spacing-10"></div>
+		<h5>User</h5>
+		<div class="row">
+			<div class="span1">User Rank</div>
+			<div class="span1"><span class="badge badge-warning" style="font-size:10pt">B</span></div>
+		</div>
+		<div class="row">
+			<div class="span1">Score</div>
+			<div class="span1"><h4>3.8 / 5</h4></div>
+		</div>
+	</div>
+</div>

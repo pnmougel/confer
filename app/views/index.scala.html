@@ -2,15 +2,16 @@
 
 @import helper._
 @import helper.twitterBootstrap._
-
+@import java.text.NumberFormat
+@import java.util.Locale
     
-@main(request, "Rainbow") {
+@main(request) {
     
     <div class="container">
         <div class="vertical-spacing-200"></div>
         <div class="row">
             <div class="span6 offset4">
-                <h1 style="font-size: 45pt">Rainbow</h1>
+                <h1 style="font-size: 45pt">@Application.name</h1>
                 <div class="vertical-spacing-30"></div>
                 <span class="badge badge-success" style="font-size: 13pt">&nbsp;</span>
                 <span class="badge badge-warning" style="font-size: 13pt">&nbsp;</span>
@@ -28,7 +29,8 @@
 	                    <button class="btn" type="submit"><i class="icon-search"></i></button>
 					</div>
 				}
-                @nbConference conference@if(nbConference > 1) {s} and journal@if(nbConference > 1) {s} referenced
+				@NumberFormat.getIntegerInstance(Locale.US).format(nbConference) 
+                conference@if(nbConference > 1) {s} and journal@if(nbConference > 1) {s} referenced
             </div>
         </div>
     </div>

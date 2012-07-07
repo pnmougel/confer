@@ -1,52 +1,50 @@
 
 $("#show_vote_form").click( -> 
-    $("#vote_form").slideToggle("slow")
+    if $("#hasVoted").val() == "true"
+        $("#vote_remove").slideToggle("slow")
+    else
+        $("#vote_form").slideToggle("slow")
 )
 
-$("#vote_rankA").mouseenter( -> $("#vote_rankA").css("background-color", '#E6FFE6').css( 'cursor', 'pointer' ))
-$("#vote_rankA").mouseleave( -> $("#vote_rankA").css("background-color", '#F5F5F5'))
-
-$("#vote_rankB").mouseenter( -> $("#vote_rankB").css("background-color", '#FFF4E6').css( 'cursor', 'pointer' ))
-$("#vote_rankB").mouseleave( -> $("#vote_rankB").css("background-color", '#F5F5F5'))
-
-$("#vote_rankC").mouseenter( -> $("#vote_rankC").css("background-color", '#E6F7FF').css( 'cursor', 'pointer' ))
-$("#vote_rankC").mouseleave( -> $("#vote_rankC").css("background-color", '#F5F5F5'))
-
-$("#vote_rankD").mouseenter( -> $("#vote_rankD").css("background-color", '#FFE6E6').css( 'cursor', 'pointer' ))
-$("#vote_rankD").mouseleave( -> $("#vote_rankD").css("background-color", '#F5F5F5'))
-
-$("#vote_rankA").click( ->
+# Handle vote
+# Update color background change on mouseover
+# Send the vote request
+handleVote = (voteId, color, score) -> 
+    $(voteId).mouseenter( -> $(voteId).css("background-color", color).css( 'cursor', 'pointer' ))
+    $(voteId).mouseleave( -> $(voteId).css("background-color", '#F5F5F5'))
+    $(voteId).click( ->
+        $.ajax(
+            url: '/vote'
+            type: 'POST'
+            data: 
+                conference_id: $("#conference_id").val()
+                user_id: $("#user_id").val()
+                score: score
+            success: (data) ->
+                $("#hasVoted").val('true')
+                $("#user_scores").html(data)
+            error: (data) -> 
+                message.addError(data.responseText)
+        )
+        $("#vote_form").slideToggle("slow")
+    )
     
-)
+# Handle events for all ranks
+handleVote("#vote_rankA", '#E6FFE6', 1)
+handleVote("#vote_rankB", '#FFF4E6', 2)
+handleVote("#vote_rankC", '#E6F7FF', 3)
+handleVote("#vote_rankD", '#FFE6E6', 4)
 
-###
-$("#btn_show_new_url").click( -> 
-    $(".add_url_form").slideToggle("fast")
-)
-
-
-$("#submit_add_url").click( ->
+$("#remove_vote").click( -> 
     $.ajax(
-        url: '/link'
-        type: 'POST'
+        url: '/vote'
+        type: 'DELETE'
         data: 
-            url: $("#input_form_add_url").val()
             conference_id: $("#conference_id").val()
-            label: $("#formAddUrlLabel").val()
+            user_id: $("#user_id").val()
         success: (data) ->
-            $('#confLinks').append(data)
-            $(".add_url_form").slideToggle("fast")
-        error: (data) -> 
-            message.addError(data.responseText)
-        complete: (data, x, e) -> 
+            $("#hasVoted").val('false')
+            $("#user_scores").html(data)
+            $("#vote_remove").slideToggle("slow")
     )
 )
-
-window.deleteUrl = (id) -> 
-    $.ajax({
-        type: 'DELETE',
-        url: '/link/' + id
-    });
-    $('#link_' + id).hide("slow")
-
-###

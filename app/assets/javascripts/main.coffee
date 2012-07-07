@@ -23,3 +23,10 @@ jQuery(document).ready( ->
 )
 
 $("#btn_show_new_conf").click( -> $("#form_new_conf").toggle("fast"))
+
+$('div').tooltip();
+$('#test').tooltip({'trigger':'focus', 'title': 'Password tooltip'});
+$("#test").tooltip(
+    animation: false
+    placement: top
+)

@@ -4,7 +4,6 @@ import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import models.Category
 import models.Conference
 import models.Publisher
 import models.Link
@@ -37,7 +36,8 @@ object User extends Controller {
             user => {
                 // Create a new user if not existing
                 if(!models.User.findByEmail(user._1).isDefined) {
-                    models.User.create(user._1, user._2)
+                    val pseudo = user._1.split("@")(0)
+                    models.User.create(user._1, user._2, pseudo)
                     val loggedUser = models.User.findByEmail(user._1)
                     Ok("Account succesfully created!").withSession("userId" -> loggedUser.get.id.toString())
                 } else {

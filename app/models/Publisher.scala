@@ -19,6 +19,10 @@ object Publisher {
         SQL("SELECT * FROM publisher WHERE name = {name} LIMIT 1").on('name -> name).as(Publisher.publisher.singleOpt)
     }
     
+    def getById(id: Long) : Option[Publisher] = DB.withConnection { implicit c =>
+        SQL("SELECT * FROM publisher WHERE id = {id} LIMIT 1").on('id -> id).as(Publisher.publisher.singleOpt)
+    }
+    
     def all(): List[Publisher] = DB.withConnection { implicit c =>
         SQL("SELECT * FROM publisher ORDER BY name").as(publisher *)
     }
@@ -35,5 +39,10 @@ object Publisher {
             SQL("DELETE FROM publisher WHERE id = {id}").on('id -> id).executeUpdate()
         }
     }
-
+    
+    def deleteAll() {
+        DB.withConnection { implicit c =>
+            SQL("DELETE FROM publisher").executeUpdate()
+        }
+    }
 }

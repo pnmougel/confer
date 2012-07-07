@@ -4,7 +4,6 @@ import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import models.Category
 import models.Conference
 import models.Publisher
 import models.Link
@@ -22,7 +21,7 @@ object Search extends Controller {
 		            Redirect(routes.Application.conference(conferences(0).id))
 		        } else if(conferences.size == 0) {
 		            // No results, propose to create a new entry
-		            Ok(views.html.noresults(searchForm, query, Category.all))
+		            Ok(views.html.noresults(searchForm, query, models.Field.all))
 		        } else {
 		            // Display the list of all matching conferences
 		            val matchingExactly = conferences.filter { conference => 
@@ -32,7 +31,7 @@ object Search extends Controller {
 		            if(matchingExactly.size == 1) {
 		                Redirect(routes.Application.conference(matchingExactly(0).id))
 		            } else {
-		                Ok(views.html.results(searchForm, query, conferences, Category.all))
+		                Ok(views.html.results(searchForm, query, conferences, models.Field.all))
 		            }
 		        }
             }

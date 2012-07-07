@@ -10,8 +10,8 @@ import models.Conference
 object Admin extends Controller {
 	
     def index = Action {
-//        Ok("Index")
-        Redirect(routes.Admin.list)
+    	Ok("Index")
+        // Redirect(routes.Admin.list)
     }
     
     def list = Action {

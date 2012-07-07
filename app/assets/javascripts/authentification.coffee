@@ -12,6 +12,7 @@ $("#logout").click( ->
             message.addSuccess(data)
             $("#btn_show_logout").hide()
             $("#btn_show_login").show()
+            location.reload()
         error: (data) ->
             message.addError(data.responseText)
         complete: () ->
@@ -26,10 +27,7 @@ $("#form_login_sign_in").click( ->
             email: $("#email").val()
             password: $("#password").val()
         success: (data) ->
-            $("#form_login").slideToggle("fast")
-            message.addSuccess(data)
-            $("#btn_show_logout").show()
-            $("#btn_show_login").hide()
+            location.reload()
         error: (data) ->
             message.addError(data.responseText)
         complete: () -> 

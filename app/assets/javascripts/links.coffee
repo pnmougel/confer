@@ -15,6 +15,7 @@ $("#submit_add_url").click( ->
             label: $("#formAddUrlLabel").val()
         success: (data) ->
             $('#confLinks').append(data)
+            # $('#links_container').html(data)
             $(".add_url_form").slideToggle("fast")
         error: (data) -> 
             message.addError(data.responseText)
@@ -26,6 +27,8 @@ window.deleteUrl = (id) ->
     $.ajax({
         type: 'DELETE',
         url: '/link/' + id
+        success: (data) ->
+            $('#confLinks').append(data)
     });
     $('#link_' + id).hide("slow")
 

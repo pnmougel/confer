@@ -7,7 +7,14 @@ import play.api.Play.current
 import java.util.Date
 import java.text.SimpleDateFormat
 
-case class Comment(id: Long, userId: Long, conferenceId: Long, content: String, date: Date, isoDate: String)
+case class Comment(
+        id: Long, 
+        userId: Long, 
+        conferenceId: Long, 
+        content: String, 
+        date: Date, 
+        isoDate: String, 
+        user: User)
 
 object Comment {
 
@@ -16,7 +23,8 @@ object Comment {
             case id ~ userId ~ conferenceId ~ content ~ date => {
                 val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
                 val isoDate = dateFormat.format(date)
-            	Comment(id, userId, conferenceId, content, date, isoDate)
+                val user = User.findById(userId).get
+            	Comment(id, userId, conferenceId, content, date, isoDate, user)
             } 
         }
     }

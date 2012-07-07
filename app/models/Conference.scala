@@ -8,7 +8,8 @@ import play.api.Play.current
 case class Conference(id: Long, name: String, shortName: Option[String], 
         yearSince: Option[Int], description: Option[String], 
         isNational: Boolean, isWorkshop: Boolean, isJournal: Boolean, 
-        category: Long, publisher: Long, categoryName: String, conferenceType : String)
+        category: Long, publisher: Long, categoryName: String, conferenceType : String,
+        publisherName : String)
 
 object Conference {
 	// This is very ugly, it probably should be better in a table in the database...
@@ -41,14 +42,15 @@ object Conference {
         get[Boolean]("is_national") ~ 
         get[Boolean]("is_workshop") ~
         get[Boolean]("is_journal") ~
-        get[Long]("category_id") ~
+        get[Long]("subfield_id") ~
         get[Long]("publisher_id") map {
             case id ~ name ~ shortName ~ yearSince ~ description ~ isNational ~ isWorkshop ~ isJournal ~ category ~ publisher =>
                 val conferenceType = typeMappingIntToString(typeMappingBooleanToInt((isNational, isWorkshop, isJournal)))
-                val categoryName = Category.getById(category).get
+                val categoryName = SubField.getById(category).get
+                val publisherName = Publisher.getById(publisher).get.name
                 Conference(
                     id, name, shortName, yearSince, description, isNational, isWorkshop, isJournal, category, 
-                    publisher, categoryName.name, conferenceType)
+                    publisher, categoryName.name, conferenceType, publisherName)
         }
     }
 
@@ -58,10 +60,10 @@ object Conference {
 
     def create(name: String, shortName: String = "", yearSince: Int = 0, 
             description: String = "", isNational: Boolean, isWorkshop: Boolean, isJournal: Boolean, 
-            category: Category, publisher: Publisher) {
+            field: Field, publisher: Publisher) {
         DB.withConnection { implicit c =>
             SQL("INSERT INTO Conference (name, short_name, description, year_since, " +
-            		"is_national, is_workshop, is_journal, category_id, publisher_id) " +
+            		"is_national, is_workshop, is_journal, subfield_id, publisher_id) " +
             		"values ({name}, {shortName}, {description}, {yearSince}, " +
             		"{isNational}, {isWorkshop}, {isJournal}, " +
             		"{category}, {publisher})").on(
@@ -72,7 +74,7 @@ object Conference {
                 'isNational -> isNational,
                 'isWorkshop -> isWorkshop,
                 'isJournal -> isJournal,
-                'category -> category.id,
+                'category -> field.id,
                 'publisher -> publisher.id
                 ).executeUpdate()
         }
@@ -80,20 +82,20 @@ object Conference {
     
     def create(name: String, shortName: String,  
             isNational: Boolean, isWorkshop: Boolean, isJournal: Boolean, 
-            categoryId: Long) {
+            fieldId: Long) : Long = {
         DB.withConnection { implicit c =>
             SQL("INSERT INTO Conference (name, short_name, " +
-            		"is_national, is_workshop, is_journal, category_id, publisher_id) " +
+            		"is_national, is_workshop, is_journal, subfield_id, publisher_id) " +
             		"values ({name}, {shortName}, " +
             		"{isNational}, {isWorkshop}, {isJournal}, " +
-            		"{category}, 1)").on(
+            		"{field}, 1)").on(
                 'name -> name,
                 'shortName -> shortName,
                 'isNational -> isNational,
                 'isWorkshop -> isWorkshop,
                 'isJournal -> isJournal,
-                'category -> categoryId
-                ).executeUpdate()
+                'field -> fieldId
+                ).executeInsert().get
         }
     }
     
@@ -114,6 +116,12 @@ object Conference {
     def delete(id: Long) {
         DB.withConnection { implicit c =>
             SQL("DELETE FROM Conference WHERE id = {id}").on('id -> id).executeUpdate()
+        }
+    }
+    
+    def deleteAll() {
+        DB.withConnection { implicit c =>
+            SQL("DELETE FROM Conference").executeUpdate()
         }
     }
 }

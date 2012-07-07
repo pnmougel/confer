@@ -5,26 +5,28 @@
 
 <!-- Links -->
 <div class="row">
-	<div class="span6"><h3>Links</h3></div>
+	<div class="span7"><h3>Links</h3></div>
 	@if(request.session.get("userId").isDefined) {
-    <div class="span2">
+    <div class="span1">
     	<button id="btn_show_new_url" class="btn" type="submit"><i class="icon-edit"></i> Add</button>
     </div>
-    <form class="span7 form-inline add_url_form" style="display:none;margin-bottom:5px;">
+    <form class="span8 form-inline add_url_form" style="display:none;margin-bottom:5px;">
+		<div class="vertical-spacing-10"></div>
 		<div class="span1" style="margin-left:0px;">
             <input type="text" class="input-mini" id="formAddUrlLabel" placeholder="Label">
         </div>
-        <div class="span5" >
-			<input type="text" class="input-xlarge" id="input_form_add_url" placeholder="Website URL">
+        <div class="span6" >
+			<input type="text" class="input-xlarge span6" id="input_form_add_url" placeholder="Website URL">
 		</div>
         <div class="span1">
 			<a class="btn btn-mini" href="#" id="submit_add_url"><i class="icon-plus-sign"></i></a>
 		</div>
+		<div class="vertical-spacing-10"></div>
     </form>
 	}
 </div>
 @if(links.size == 0) {
-    There is no link related to this conference
+    <p>There is no link related to this conference</p>
 } else {
 <ul class="unstyled" id="confLinks">
 @links.map { link => 

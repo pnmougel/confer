@@ -32,7 +32,13 @@ object User {
         SQL("select * from iuser where email = {email}").on(
             'email -> email).as(User.user.singleOpt)
     }
-
+    
+    def findById(id: Long): Option[User] = DB.withConnection { implicit connection =>
+        SQL("select * from iuser where id = {id}").on(
+            'id -> id).as(User.user.singleOpt)
+    }
+    
+    
     /**
      * Retrieve all users.
      */
@@ -58,13 +64,19 @@ object User {
     /**
      * Create a User.
      */
-    def create(email: String, password: String) = DB.withConnection { implicit connection =>
+    def create(email: String, password: String, pseudo: String) : Long = DB.withConnection { implicit connection =>
     	val digest = MessageDigest.getInstance("SHA").digest(password.getBytes()).toString()
     	println("Create digest: " + digest)
-        SQL("insert into iuser (email, password, isadmin) values ({email}, {password}, FALSE)").on(
+        SQL("insert into iuser (email, password, pseudo, isadmin) values ({email}, {password}, {pseudo}, FALSE)").on(
                 'email -> email,
-                'password -> hashPassword(password)).executeUpdate()
+                'password -> hashPassword(password),
+                'pseudo -> pseudo).executeInsert().get
         
     }
 
+    def deleteAll() {
+        DB.withConnection { implicit c =>
+            SQL("DELETE FROM iuser").executeUpdate()
+        }
+    }
 }

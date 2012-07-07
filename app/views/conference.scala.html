@@ -1,61 +1,26 @@
-@(conference: Conference, links: List[Link], comments: List[Comment])(implicit request: RequestHeader)
+@(conference: Conference, userVotes : UserVotes, hasVoted : Boolean, links: List[Link], comments: List[Comment])(implicit request: RequestHeader)
 
 @import helper._
 @import helper.twitterBootstrap._
 
-@main(request, "Rainbow") {
+@main(request) {
     <div class="container">
         <div class="row">
             <div class="span8 offset2">
-				<h2>@conference.shortName</h2>
-                <div class="row">
-                    <div class="span6">
-                        <h4>@conference.name</h4>
-					</div>
-					<div class="span2">
-						<button id="btn_show_edit" class="btn" type="submit"><i class="icon-pencil"></i> Edit</button>
-					</div>
-				</div>
-				<hr/>
-                <div class="row">
-                    <div class="span5">
-                        <h5>@conference.conferenceType on @conference.categoryName</h5>
-		                <h5>Started on @conference.yearSince</h5>
-		                <h5>Publisher IEEE</h5>
-		                @conference.description
-	                </div>
-	                <div class="span2 well" >
-	                   <h5>Average</h5>
-	                   <div class="row">
-	                       <div class="span1">Avg. Rank</div>
-                           <div class="span1"><span class="badge badge-success" style="font-size:10pt">A</span></div>
-                       </div>
-                       <div class="row">
-	                       <div class="span1">Score</div>
-                           <div class="span1"><h4>4.5 / 5</h4></div>
-	                   </div>
-	                   <div class="vertical-spacing-10"></div>
-	                   <h5>User</h5>
-                       <div class="row">
-                           <div class="span1">User Rank</div>
-                           <div class="span1"><span class="badge badge-warning" style="font-size:10pt">B</span></div>
-                       </div>
-	                   <div class="row">
-                           <div class="span1">Score</div>
-                           <div class="span1"><h4>3.8 / 5</h4></div>
-                       </div>
-                       
-	                </div>
-                </div>
-
                 <input type="hidden" id="conference_id" value="@conference.id">
-                
+                <input type="hidden" id="hasVoted" value="@hasVoted">
+
+				<!-- Conference information -->
+				@conferences.information(conference, request)
+
 				<!-- Scores -->
-				@conferences.scores(request)
+				@conferences.scores(userVotes, request)
 
                 <!-- Links -->
-				@conferences.links(links, request)
-                
+				<div id="links_container">
+					@conferences.links(links, request)
+                </div>
+
                 <!-- Comments -->
                 @conferences.comments(comments, request)
             </div>
