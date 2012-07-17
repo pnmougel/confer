@@ -6,10 +6,21 @@
     
 @main(request) {
     <div class="container">
-        <div class="vertical-spacing-30"></div>
+		@if(conferences.size == 0) {
+		<div class="vertical-spacing-150"></div>
+		} else {
+		<div class="vertical-spacing-30"></div>
+		}
+
         <div class="row">
-            <div class="span6 offset3">
-                <h4>Your query "<span style="font-size:14pt">@query</span>" matched<span style="font-size:14pt"> @conferences.size</span> results</h4>
+			@if(conferences.size == 0) {
+		    <div class="span6 offset4">
+				<h1 style="font-size: 45pt">Sorry,</h1>
+                <div class="vertical-spacing-30"></div>
+                <p>No conference or journal matched your query</p>
+			} else {
+		    <div class="span6 offset3">
+				<h4>Your query "<span style="font-size:14pt">@query</span>" matched<span style="font-size:14pt"> @conferences.size</span> results</h4>
                 <ul class="unstyled">
                 @conferences.map { conference =>
                     @snippets.conferenceResult(conference)
@@ -17,7 +28,7 @@
                 </ul>
                 <div class="vertical-spacing-30"></div>
                 <p>You tried to find a conference or a journal and its not here ?</p>
-                
+            }
                 <button class="btn btn-primary btn-large" type="submit" id="btn_show_new_conf">Add a new one</button>
                 <div class="vertical-spacing-20"></div>
                 @helper.form(routes.Application.addConf, 
@@ -43,11 +54,9 @@
                             <label class="control-label" for="type" >Type</label>
                             <div class="controls">
                                 <select id="type" name="type" >
-                                    <option value="1">Journal</option>
-                                    <option value="2">International Conference</option>
-                                    <option value="3">National Conference</option>
-                                    <option value="4">International Workshop</option>
-                                    <option value="5">National Workshop</option>
+                    				@CType.all.map { ctype =>
+                    				    <option value="@ctype.id">@ctype.name</option>
+                    				}
                                 </select>
                             </div>
                         </div>
@@ -72,7 +81,7 @@
                 
                 @helper.form(routes.Search.search, 'class -> "form-inline") {
                     <div class="input-append">
-                        <input type="text" id="query" name="query" value="" class="span3" placeholder="Search a conference...">
+                        <input type="text" id="query" name="query" value="@query" class="span3" placeholder="Search a conference...">
                         <button class="btn" type="submit"><i class="icon-search"></i></button>
                     </div>
                 }

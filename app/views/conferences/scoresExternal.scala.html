@@ -1,12 +1,23 @@
-@(request: RequestHeader)
+@(conference : Conference, externalScores : List[ExternalScore], request: RequestHeader)
 
 <div class="span4">
 	<div class="row">
 		<div class="span1"><h5>Ext. score:</h5></div>
-		<div class="span1"><h5>4.2 / 5</h5></div>
+		@if(conference.externalScore.isDefined) {
+    		<div class="span1"><h5>@snippets.doubleDisplay(conference.externalScore.get) / 5</h5></div>
+		}
 	</div>
 <div class="vertical-spacing-10"></div>
 	<ul class="unstyled">
-		<li>@snippets.scoreExternal()</li>
+		@externalScores.map { externalScore =>
+		    <li>
+				<div class="row">
+					<div class="span1"><a href="@externalScore.externalRanking.url"><h5 style="color:black">@externalScore.externalRanking.name</h5></a></div>
+					<div class="span1">@externalScore.scoreText</div>
+					<div class="span1">@snippets.doubleDisplay(externalScore.score) / 5</div>
+					<div class="span1">@snippets.badge(Option[Double](externalScore.score))</div>
+				</div>
+			</li>
+		}
 	</ul>
 </div>

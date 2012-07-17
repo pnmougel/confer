@@ -1,4 +1,4 @@
-@(conference: Conference, userVotes : UserVotes, hasVoted : Boolean, links: List[Link], comments: List[Comment])(implicit request: RequestHeader)
+@(conference: Conference, userVotes : UserVotes, externalScores : List[ExternalScore], subFields : List[SubField], relatedConferences : List[Conference], hasVoted : Boolean, links: List[Link], comments: List[Comment])(implicit request: RequestHeader)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -11,14 +11,14 @@
                 <input type="hidden" id="hasVoted" value="@hasVoted">
 
 				<!-- Conference information -->
-				@conferences.information(conference, request)
+				@conferences.information(conference, subFields, relatedConferences, request)
 
 				<!-- Scores -->
-				@conferences.scores(userVotes, request)
+				@conferences.scores(conference, userVotes, externalScores, request)
 
                 <!-- Links -->
 				<div id="links_container">
-					@conferences.links(links, request)
+				@conferences.links(links, request)
                 </div>
 
                 <!-- Comments -->

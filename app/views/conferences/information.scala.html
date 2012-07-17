@@ -1,4 +1,4 @@
-@(conference: Conference, request: RequestHeader)
+@(conference: Conference, subFields : List[SubField], relatedConferences : List[Conference], request: RequestHeader)
 
 <div class="row">
 	<div class="span7">
@@ -20,32 +20,84 @@
 <hr/>
 <div class="row">
 	<div class="span6">
-    	<h5>@conference.conferenceType on @conference.categoryName</h5>
-		@if(conference.yearSince.size != 0) {
-		    <h5>Started on @conference.yearSince</h5>
-		}
-		<h5>Published by @conference.publisherName</h5>
-		<p style="padding-right:20px;">@conference.description</p>
+		<div id="information_show">
+    		<h5>@conference.cType.name on @conference.field.name</h5>
+			@if(subFields.size > 0) {
+			    <ul>
+					@subFields.map { subField =>
+					    <li>@subField.name</li>
+					}
+				</ul>
+			}
+
+			@if(relatedConferences.size > 0) {
+			    <h5>Related to:<h5>
+			    <ul>
+					@relatedConferences.map { relatedConference =>
+					    <li><a href="/conference/@relatedConference.id">@relatedConference.name</a></li>
+					}
+				</ul>
+			}
+
+			@if(conference.yearSince.size != 0) {
+			<h5>Started on @conference.yearSince</h5>
+			}
+			@if(conference.publisher.isDefined) {
+			    <h5>Published by @conference.publisher.get.name</h5>
+			}
+			<p style="padding-right:20px;">@conference.description</p>
+		</div>
+
+		<form id="information_edit" class="form-horizontal" style="display:none;">
+			<label class="control-label" for="publisher_field" style="text-align:left;"><h5>Published by</h5></label>
+			<div class="controls">
+			<select id="publisher_field">
+				<option value="-1">Unknown</option>
+			@Publisher.all.map { publisher =>
+			    <option value="@publisher.id">@publisher.name</option>
+			}
+			</select>
+			</div>
+			<div class="vertical-spacing-10"></div>
+			<label class="control-label" for="startedOn_field" style="text-align:left;"><h5>Started in</h5></label>
+			<div class="controls">
+				<input type="text" class="input-mini" id="startedOn_field" placeholder="Year"></input>
+			</div>
+			<div class="vertical-spacing-10"></div>
+			<textarea class="input span5" id="description_field" rows="5" placeholder="Description..."></textarea>
+		</form>
 	</div>
+	
+
+
+
 	<div class="span2 well" style="padding:12px;margin:0px;">
-		<h5>Average</h5>
+		<h5>Scores</h5>
 	    <div class="row">
 	    	<div class="span1">Avg. Rank</div>
-            <div class="span1"><span class="badge badge-success" style="font-size:10pt">A</span></div>
+            <div class="span1">@snippets.badge(conference.avgScore)</div>
 		</div>
         <div class="row">
-			<div class="span1">Score</div>
-			<div class="span1"><h4>4.5 / 5</h4></div>
+			@if(conference.avgScore.isDefined) {
+			    <div class="span1">Avg. Score</div>
+				<div class="span1"><h4>@snippets.doubleDisplay(conference.avgScore.get) / 5</h4></div>
+			}
 		</div>
 	    <div class="vertical-spacing-10"></div>
-		<h5>User</h5>
+		@if(conference.hindex.isDefined || conference.nbArticles.isDefined) {
+		<h5>Bibliometrics</h5>
+			@if(conference.hindex.isDefined) {
 		<div class="row">
-			<div class="span1">User Rank</div>
-			<div class="span1"><span class="badge badge-warning" style="font-size:10pt">B</span></div>
+			<div class="span1">H-index</div>
+			<div class="span1"><h4>@conference.hindex.get</h4></div>
 		</div>
+			}
+			@if(conference.nbArticles.isDefined) {
 		<div class="row">
-			<div class="span1">Score</div>
-			<div class="span1"><h4>3.8 / 5</h4></div>
+			<div class="span1"># articles</div>
+			<div class="span1"><h4>@conference.nbArticles.get</h4></div>
 		</div>
+			}
+		}
 	</div>
 </div>

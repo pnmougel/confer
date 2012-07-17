@@ -30,10 +30,10 @@ handleVote = (voteId, color, score) ->
     )
     
 # Handle events for all ranks
-handleVote("#vote_rankA", '#E6FFE6', 1)
-handleVote("#vote_rankB", '#FFF4E6', 2)
-handleVote("#vote_rankC", '#E6F7FF', 3)
-handleVote("#vote_rankD", '#FFE6E6', 4)
+handleVote("#vote_rankA", '#E6FFE6', 4)
+handleVote("#vote_rankB", '#FFF4E6', 3)
+handleVote("#vote_rankC", '#E6F7FF', 2)
+handleVote("#vote_rankD", '#FFE6E6', 1)
 
 $("#remove_vote").click( -> 
     $.ajax(

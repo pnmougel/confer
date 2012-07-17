@@ -5,12 +5,12 @@ import anorm.SqlParser._
 import play.api.db._
 import play.api.Play.current
 
-case class Publisher(id: Pk[Long], name: String)
+case class Publisher(id: Long, name: String)
 
 object Publisher {
 
     val publisher = {
-        get[Pk[Long]]("id") ~ get[String]("name") map {
+        get[Long]("id") ~ get[String]("name") map {
             case id ~ name => Publisher(id, name)
         }
     }

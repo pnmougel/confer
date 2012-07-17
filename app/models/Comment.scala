@@ -45,7 +45,13 @@ object Comment {
     def all(): List[Comment] = DB.withConnection { implicit c =>
         SQL("SELECT * FROM comment").as(comment *)
     }
-
+    
+    def setRelatedToConference(originalConferenceId : Long, newConferenceId : Long) = DB.withConnection { implicit c =>
+        SQL("UPDATE comment SET conference_id = {newConferenceId} WHERE conference_id = {originalConferenceId}").on(
+                'newConferenceId -> newConferenceId,
+                'originalConferenceId -> originalConferenceId).executeUpdate()
+    }
+    
     def create(conferenceId : Long, userId : Long, content: String, date: Date) {
         DB.withConnection { implicit c =>
             SQL("INSERT INTO comment (iuser_id, conference_id, content, date) values " +

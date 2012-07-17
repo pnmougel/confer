@@ -11,6 +11,10 @@ import play.api.mvc.Controller
 
 object Scores extends Controller {
 	
+    def getScore(conferenceId : Long, externalRankingId : Long, externalScore : Int) {
+        
+    }
+    
     val userScoreForm = Form(
         tuple(
             "conference_id" -> number,

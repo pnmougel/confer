@@ -7,47 +7,33 @@ import play.api.Play.current
 
 case class SubField(id: Long, name: String, fieldId : Long)
 
-object SubField {
-
-    val subField = {
+object SubField extends Table[SubField] {
+	
+    val tableName = "subfield"
+    
+    val single = {
         get[Long]("id") ~ get[String]("name") ~ get[Long]("field_id") map {
             case id ~ name ~ fieldId => SubField(id, name, fieldId)
         }
     }
     
     def getByName(name: String) : Option[SubField] = DB.withConnection { implicit c =>
-        SQL("SELECT * FROM subfield WHERE name = {name} LIMIT 1").on('name -> name).as(SubField.subField.singleOpt)
-    }
-    
-    def getById(id: Long) : Option[SubField] = DB.withConnection { implicit c =>
-        SQL("SELECT * FROM subfield WHERE id = {id} LIMIT 1").on('id -> id).as(SubField.subField.singleOpt)
+        SQL("SELECT * FROM subfield WHERE name = {name} LIMIT 1").on('name -> name).as(SubField.single.singleOpt)
     }
     
     def getByField(id: Long) : List[SubField] = DB.withConnection { implicit c =>
-        SQL("SELECT * FROM subfield WHERE field_id = {id} ORDER BY name").on('id -> id).as(subField *)
+        SQL("SELECT * FROM subfield WHERE field_id = {id} ORDER BY name").on('id -> id).as(single *)
     }
     
-    def all(): List[SubField] = DB.withConnection { implicit c =>
-        SQL("SELECT * FROM subfield ORDER BY name").as(subField *)
-    }
-
-    def create(name: String, fieldId : Long) : Long = {
-        DB.withConnection { implicit c =>
-            SQL("INSERT INTO subfield (name, field_id) values ({name}, {fieldId})").on(
-                'name -> name,
-                'fieldId -> fieldId).executeInsert().get
-        }
-    }
-
-    def delete(id: Long) {
-        DB.withConnection { implicit c =>
-            SQL("DELETE FROM subfield WHERE id = {id}").on('id -> id).executeUpdate()
-        }
+    override def all(): List[SubField] = DB.withConnection { implicit c =>
+        SQL("SELECT * FROM subfield ORDER BY name").as(single *)
     }
     
-    def deleteAll() {
-        DB.withConnection { implicit c =>
-            SQL("DELETE FROM subfield").executeUpdate()
-        }
+    def setRelatedToConference(originalConferenceId : Long, newConferenceId : Long) = DB.withConnection { implicit c =>
+        SQL("UPDATE conference_subfield SET conference_id = {newConferenceId} WHERE conference_id = {originalConferenceId}").on(
+                'newConferenceId -> newConferenceId,
+                'originalConferenceId -> originalConferenceId).executeUpdate()
     }
+    
+    def create(name: String, fieldId : Long) : Long = build('name -> name, 'field_id -> fieldId)
 }

@@ -25,16 +25,16 @@ object UserVote {
         var nbVoteC = 0
         var nbVoteD = 0
         getByConferenceId(conferenceId).foreach { vote =>
-            if(vote.score == 1) {
+            if(vote.score == 4) {
                 nbVoteA += 1
             }
-            if(vote.score == 2) {
+            if(vote.score == 3) {
                 nbVoteB += 1
             }
-            if(vote.score == 3) {
+            if(vote.score == 2) {
                 nbVoteC += 1
             }
-            if(vote.score == 4) {
+            if(vote.score == 1) {
                 nbVoteD += 1
             }
         }
@@ -46,7 +46,7 @@ object UserVote {
         val avgUserScore = if(totalVotes == 0) {
             -1
         } else {
-            Math.max(0, (-1 * nbVoteD + nbVoteC + 2 * nbVoteB + 3 * nbVoteA) * 5.0 / (3 * totalVotes))
+            scala.math.max(0, (-1 * nbVoteD + nbVoteC + 2 * nbVoteB + 3 * nbVoteA) * 5.0 / (3 * totalVotes))
         }
         UserVotes(avgUserScore, totalVotes, (nbVoteA, percVoteA.toInt), (nbVoteB, percVoteB.toInt), (nbVoteC, percVoteC.toInt), (nbVoteD, percVoteD.toInt))
     }
@@ -75,14 +75,20 @@ object UserVote {
                 'score -> score,
                 'date -> date).executeUpdate()
         }
+        Conference.updateUserScoreForConference(conferenceId)
     }
 
-    def delete(conferenceId: Long, userId: Long) {
-        DB.withConnection { implicit c =>
-            SQL("DELETE FROM scoreiuser WHERE conference_id = {conferenceId} AND iuser_id = {userId}").on(
+    def delete(conferenceId: Long, userId: Long) = DB.withConnection { implicit c =>
+    	SQL("DELETE FROM scoreiuser WHERE conference_id = {conferenceId} AND iuser_id = {userId}").on(
                     'conferenceId -> conferenceId,
                     'userId -> userId).executeUpdate()
-        }
+        Conference.updateUserScoreForConference(conferenceId)
+    }
+    
+    def deleteByConference(conferenceId : Long) = DB.withConnection { implicit c =>
+        SQL("DELETE FROM scoreiuser WHERE conference_id = {conferenceId}").on(
+                'conferenceId -> conferenceId).executeUpdate()
+        Conference.updateUserScoreForConference(conferenceId)
     }
 
 }

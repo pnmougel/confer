@@ -20,6 +20,7 @@ window.message = {
 
 jQuery(document).ready( ->
     jQuery("time.timeago").timeago()
+    prettyPrint()
 )
 
 $("#btn_show_new_conf").click( -> $("#form_new_conf").toggle("fast"))

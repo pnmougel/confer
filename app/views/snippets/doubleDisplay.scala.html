@@ -1,0 +1,7 @@
+@(score: Double)
+
+@if(score == score.toInt) {
+	@score.toInt
+} else {
+    @{"%1.1f" format score}
+}

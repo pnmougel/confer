@@ -7,32 +7,48 @@ GET     /                           controllers.Application.index
 GET     /index                      controllers.Application.index
 GET     /home                       controllers.Application.index
 
+# Rankings
+GET     /ranking/field/:id          controllers.Ranking.byField(id : Long)
+GET     /ranking/page               controllers.Ranking.page
+
+# Static pages
+GET     /page/help                  controllers.StaticPage.help
+GET     /page/widget                controllers.StaticPage.widget
+GET     /page/about                 controllers.StaticPage.about
+
 # Conference
 GET     /conference/:id             controllers.Application.conference(id: Long)
 POST    /addConf                    controllers.Application.addConf()
-
 GET     /search                     controllers.Search.search()
 
 # Links
 POST    /link                       controllers.conference.Links.addLink()
 DELETE  /link/:id                   controllers.conference.Links.deleteLink(id: Long)
 
-# Administration
-GET     /admin                      controllers.admin.Admin.index
-GET     /admin/mar                  controllers.admin.MicrosoftAR.index()
-
-GET     /build                      controllers.Application.buildData
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
-
+# Users
 POST    /user/login                 controllers.User.login
 POST    /user/add                   controllers.User.add
 GET     /user/logout                controllers.User.logout
 
+# Comments
 POST    /comment                    controllers.conference.Comments.addComment()
 DELETE  /comment/:id                controllers.conference.Comments.deleteComment(id: Long)
+
+# Publisher
+POST    /publisher                  controllers.conference.Publishers.add()
+DELETE  /publisher/:id              controllers.conference.Publishers.delete(id: Long)
 
 # Votes
 POST    /vote                       controllers.conference.Scores.addVote()
 DELETE  /vote                       controllers.conference.Scores.deleteVote()
+
+# Administration
+GET     /admin                      controllers.admin.Admin.index
+GET     /admin/mar                  controllers.admin.MicrosoftAR.index()
+GET     /admin/core                 controllers.admin.Core.index()
+GET     /admin/merge                controllers.admin.Merge.index()
+POST    /admin/core/update          controllers.admin.Core.update()
+GET     /admin/publisher            controllers.admin.FindPublisher.index()
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+

@@ -1,0 +1,97 @@
+@(conferences : List[Conference], subFields: List[models.SubField])(implicit request: RequestHeader)
+
+@import helper._
+    
+@main(request) {
+	
+    <style>
+.buttontext {
+  width: 110px;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  text-overflow: ellipsis;
+  text-align:center;
+}
+</style>​
+    <div class="container">
+		<div class="row">
+			<div class="span8 offset2">
+					<span class="btn-group">
+						<button class="btn" style="margin-bottom:5px;">All</button>
+						<button class="btn" style="margin-bottom:5px;margin-right:10px;">None</button>
+					</span>
+					<span class="btn-group" data-toggle="buttons-checkbox">
+						<button class="btn" style="margin-bottom:5px;">National</button>
+						<button class="btn" style="margin-bottom:5px;margin-right:10px;">International</button>
+					</span>
+					<div class="btn-group" data-toggle="buttons-checkbox">
+						<button class="btn" style="margin-bottom:5px;">Conferences</button>
+						<button class="btn" style="margin-bottom:5px;">Journals</button>
+						<button class="btn" style="margin-bottom:5px;">Workshops</button>
+					</div>
+					@subFields.zipWithIndex.map { case (subField, idx) =>
+				    	@if(idx % 8 == 0) {
+				    <span class="btn-group" data-toggle="buttons-checkbox" style="display:none;">
+				    	}
+				    	<button class="btn" style="width:130px;margin-bottom:5px;"><span class="buttontext">@subField.name</span></button>
+				    	@if((idx + 1) % 8 == 0) {
+				    </span>
+				    	}
+				    }
+			</div>
+		</div>
+		<div class="vertical-spacing-20"></div>
+		<div class="row">
+			<div class="offset7 span1" style="text-align:right;"><h6>User</h6></div>
+			<div class="span1" style="text-align:right;"><h6>External</h6></div>
+			<div class="span1" style="text-align:right;"><h6>Average </h6></div>
+		</div>
+		<div class="vertical-spacing-10"></div>
+		
+		@conferences.zipWithIndex.map { case (conference, idx) =>
+		<div class="row">
+			<div class="span1 offset1" style="font-size:14pt;font-weight:bold;text-align:right;">#@{idx + 1}</div>
+			<div class="span5" style="border-left:4px solid #088BCD;margin-left: 21px;padding-left: 5px;">
+				<h4>
+					<a href="/conference/@conference.id">
+		    		@conference.name 
+		    		@if(conference.shortName.isDefined) {
+		    			@if(conference.shortName.get != "") { (@conference.shortName.get) }
+		    		}
+		    		</a>
+				</h4>
+		    	<h6>@conference.cType.name on @conference.field.name</h6>
+			</div>
+		    <div class="span1" style="text-align:right;">
+		    	<h5 style="font-size:12pt;">
+		    	@if(conference.userScore.isDefined) {
+		    	    @snippets.doubleDisplay(conference.userScore.get)
+		    	} else {
+		    	    -&nbsp; 
+		    	}
+		    	<h5>
+		    </div>
+			<div class="span1" style="text-align:right;">
+		    	<h5 style="font-size:12pt;">
+		    	@if(conference.externalScore.isDefined) {
+		    	    @snippets.doubleDisplay(conference.externalScore.get)
+		    	} else {
+		    	    -&nbsp; 
+		    	}
+		    	<h5>
+		    </div>
+			<div class="span1" style="text-align:right;">
+		    	<h5 style="font-size:12pt;">
+		    	@if(conference.avgScore.isDefined) {
+		    	    @snippets.doubleDisplay(conference.avgScore.get)
+		    	} else {
+		    	    -&nbsp; 
+		    	}
+		    	<h5>
+		    </div>
+		</div>
+		<div class="vertical-spacing-20"></div>
+        }
+	</div>
+}

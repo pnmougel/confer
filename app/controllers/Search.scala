@@ -15,13 +15,10 @@ object Search extends Controller {
         searchForm.bindFromRequest.fold(
             errors => BadRequest("How did you manage that ?"),
             query => {
-                val conferences = Conference.search(query);
+                val conferences = Conference.findByNameAndShortName(query);
 		        if(conferences.size == 1) {
 		            // Only one conference is matching
 		            Redirect(routes.Application.conference(conferences(0).id))
-		        } else if(conferences.size == 0) {
-		            // No results, propose to create a new entry
-		            Ok(views.html.noresults(searchForm, query, models.Field.all))
 		        } else {
 		            // Display the list of all matching conferences
 		            val matchingExactly = conferences.filter { conference => 

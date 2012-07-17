@@ -13,3 +13,10 @@ http://www.confsearch.org/confsearch/
 http://en.wikipedia.org/wiki/List_of_computer_science_conferences
 http://en.wikipedia.org/wiki/Journal_ranking
 http://webdocs.cs.ualberta.ca/~zaiane/htmldocs/ConfRanking.html
+
+// Impact factor
+// Score = 2 + (3 * IF / 0.45) 
+http://citeseerx.ist.psu.edu/stats/venues
+
+// tscore ??
+http://sceas.csd.auth.gr/php/rank.php4?year=0&level=-1&isi=1

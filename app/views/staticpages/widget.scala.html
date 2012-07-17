@@ -1,0 +1,42 @@
+@(implicit request: RequestHeader)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+    
+@main(request) {
+    <div class="container">
+        <div class="vertical-spacing-100"></div>
+        <div class="row">
+            <div class="span7 offset3">
+				<span style="font-size:40pt;"><img src="/assets/images/icon2.svg"> Get the widget !</span>
+				<br/><br/>
+				<div class="row">
+				<div class="well span3">
+					<h3>Why for ?</h3>
+					<p>The widget allows you to display in your website the rank of a conference or a journal.</p>
+					<p>You can also use it to display other information, such as the h-index or the number of published articles, when available.</p>
+				</div>
+				<div class="well span3">
+					<h3>How can I use it ?</h3>
+					<p>You just have to include one line of javascript in your page.</p>
+					<code class="prettyprint">&lt;script src="http://cwid/<span style="color:red;">ID</span>"&gt;&lt;script&gt;</code>
+					<p>and replace "NAME" with the name of the conference or journal.</p>
+				</div>
+				<div class="well span6">
+					<h3>Examples</h3>
+					<h6>Simple usage</h6>
+					<p>If you just want to add the rank badge, the following line is all you need</p>
+					<code class="prettyprint">&lt;script src="http://confer.org/widget/45"&gt;&lt;script&gt;</code>
+					<h6>All the information</h6>
+					<p>If you just want to add the rank badge, the following line is all what you need</p>
+					<code class="prettyprint">&lt;script src="http://confer.org/widget/45"&gt;&lt;script&gt;</code>
+					<h6>Customize the output</h6>
+					<p>If you just want to add the rank badge, the following line is all what you need</p>
+					<code class="prettyprint">&lt;script src="http://confer.org/widget/45"&gt;&lt;script&gt;</code>
+				</div>
+				</div>
+            </div>
+        </div>
+    </div>
+}

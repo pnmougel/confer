@@ -1,0 +1,4 @@
+
+alert $("div.confRank").length
+
+

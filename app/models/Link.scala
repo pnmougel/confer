@@ -8,49 +8,27 @@ import java.util.Date
 
 case class Link(id: Long, conferenceId: Long, url: String, label: String)
 
-object Link {
+object Link extends Table[Link] {
 
-    val link = {
+    val tableName = "link"
+        
+    val single = {
         get[Long]("id") ~ get[Long]("conference_id") ~ get[String]("url") ~ get[String]("name") map {
             case id ~ conferenceId ~ url ~ label => Link(id, conferenceId, url, label)
         }
     }
     
-    def getByDate(date : Date) : Option[Link] = DB.withConnection { implicit c =>
-        SQL("SELECT * FROM link WHERE date = {date}").on('date -> date).as(Link.link.singleOpt)
+    def setRelatedToConference(originalConferenceId : Long, newConferenceId : Long) = DB.withConnection { implicit c =>
+        SQL("UPDATE link SET conference_id = {newConferenceId} WHERE conference_id = {originalConferenceId}").on(
+                'newConferenceId -> newConferenceId,
+                'originalConferenceId -> originalConferenceId).executeUpdate()
     }
     
-    def getById(id: Long) : Option[Link] = DB.withConnection { implicit c =>
-        SQL("SELECT * FROM link WHERE id = {id}").on('id -> id).as(Link.link.singleOpt)
-    }
+    def getByDate(date : Date) : Option[Link] = findOneBy[Date](date, "date")
     
-    def getByConferenceId(conferenceId: Long) : List[Link] = DB.withConnection { implicit c =>
-        SQL("SELECT * FROM link WHERE conference_id = {id}").on('id -> conferenceId).as(link *)
-    }
+    def getByConferenceId(conferenceId: Long) : List[Link] = findBy[Long](conferenceId, "conference_id")
     
-    def all(): List[Link] = DB.withConnection { implicit c =>
-        SQL("SELECT * FROM link").as(link *)
-    }
-    
-    def create(conferenceId : Long, url: String, label: String, date : Date) {
-        DB.withConnection { implicit c =>
-            SQL("INSERT INTO link (conference_id, url, name, date) values ({conferenceId}, {url}, {label}, {date})").on(
-                'conferenceId -> conferenceId,
-                'url -> url,
-                'label -> label,
-                'date -> date).executeUpdate()
-        }
-    }
-
-    def delete(id: Long) {
-        DB.withConnection { implicit c =>
-            SQL("DELETE FROM link WHERE id = {id}").on('id -> id).executeUpdate()
-        }
-    }
-    
-    def deleteAll() {
-        DB.withConnection { implicit c =>
-            SQL("DELETE FROM link").executeUpdate()
-        }
+    def create(conferenceId : Long, url: String, label: String, date : Date) : Long = {
+        build('conference_id -> conferenceId, 'url -> url, 'name -> label, 'date -> date)
     }
 }

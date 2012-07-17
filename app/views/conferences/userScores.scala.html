@@ -7,11 +7,7 @@
 		@if(userVotes.avgUserScore == -1) {
     		No votes yet 
 		} else {
-			@if(userVotes.avgUserScore == userVotes.avgUserScore.toInt) {
-				@userVotes.avgUserScore.toInt
-			} else {
-			    @{"%1.1f" format userVotes.avgUserScore}
-			}
+		    @snippets.doubleDisplay(userVotes.avgUserScore)
 			/ 5
 		}</h5></div>
 	</div>

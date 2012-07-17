@@ -10,10 +10,10 @@
     <div>
     @if(request.session.get("userId").isDefined) {
     	<div class="vertical-spacing-30"></div>
-    	<form class="well span7" id="add_comment_form" style="padding:7px;">
+    	<form class="well span7" id="add_comment_form" style="padding:1px;">
 			<input type="hidden" id="user_id" value="@request.session.get("userId").get" >
-            <textarea class="input-xlarge span7" id="comment_field" rows="1" placeholder="Add a comment..." style="margin-bottom:0px;"></textarea>
-            <button class="btn btn-mini" id="submit_add_comment" style="display:none;margin-top:5px;"><i class="icon-pencil"></i> Post</button>
+            <textarea class="input span7" id="comment_field" rows="1" placeholder="Add a comment..." style="margin-bottom:0px;"></textarea>
+			<button class="btn btn-mini" id="submit_add_comment" style="display:none;margin-top:5px;"><i class="icon-pencil"></i> Post</button>
 		</form>
 	}
 	</div>

@@ -1,4 +1,4 @@
-@(userVotes : UserVotes, request: RequestHeader)
+@(conference : Conference, userVotes : UserVotes, externalScores : List[ExternalScore], request: RequestHeader)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -52,7 +52,7 @@
 
 <div class="row">
 	<div id="external_scores">
-		@conferences.scoresExternal(request)
+		@conferences.scoresExternal(conference, externalScores, request)
 	</div>
 	
 	<div id="user_scores">

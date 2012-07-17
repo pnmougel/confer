@@ -16,6 +16,7 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.HashSet
 import java.util.Date
+import models.CType
 
 object MicrosoftAR extends Controller {
 	
@@ -23,8 +24,8 @@ object MicrosoftAR extends Controller {
     val Conference = 3
     
     def index = Action {
-        models.Field.deleteAll()
         models.SubField.deleteAll()
+        models.Field.deleteAll()
         models.Link.deleteAll()
         models.Conference.deleteAll()
         
@@ -41,20 +42,7 @@ object MicrosoftAR extends Controller {
     }
     
     def getDoc(fileName : String, url : String) : Document = {
-//        println(url)
-        var cacheFile = new File("cache/microsoft_AR/" + fileName)
-        if(cacheFile.exists()) {
-            val html = Source.fromFile(cacheFile).getLines().mkString("\n")
-            Jsoup.parse(html)
-        } else {
-            println(url)
-            val tmpDoc = Jsoup.connect(url).timeout(200000).get()
-            val htmlFile = new PrintWriter(cacheFile)
-            htmlFile.write(tmpDoc.body().toString())
-            htmlFile.flush()
-            htmlFile.close()
-            tmpDoc
-        }
+        Utils.getDocument("microsoft_AR", fileName, url)
     }
     
     def getTopDomains(entityType : Int) : HashMap[Int, String] = {
@@ -154,9 +142,19 @@ object MicrosoftAR extends Controller {
                 }
             }
             if(data.size == 2) {
-                val conferenceId = models.Conference.create(
-                    fullName, shortName, false, false, (entityType == Journal), curSubFieldId)
-                    models.Link.create(conferenceId, url, "Microsoft AR", new Date())
+                val cType = {
+                    if(entityType == Conference) {
+                        1
+	                } else {
+	                    2
+	                }
+                }
+                
+                val conferenceId = models.Conference.create(fullName, shortName, cType, curFieldId)
+                models.Conference.setNbArticles(conferenceId, nbPublications.toInt)
+                models.Conference.setHIndex(conferenceId, hIndex.toInt)
+                models.Conference.addSubField(conferenceId, curSubFieldId)
+                models.Link.create(conferenceId, url, "Microsoft AR", new Date())
             }
             
                     
